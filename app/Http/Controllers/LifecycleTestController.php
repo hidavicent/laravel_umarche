@@ -41,7 +41,7 @@ class LifecycleTestController extends Controller
     }
 }
 
-//本来ならいファイル1クラス、今回はテストのため引き続き記述
+//本来なら1ファイル1クラス、今回はテストのため引き続き記述
 class Sample
 {
     public $message;

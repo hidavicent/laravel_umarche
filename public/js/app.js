@@ -659,6 +659,10 @@ var directiveOrder = [
   "ref",
   "data",
   "id",
+  "tabs",
+  "radio",
+  "switch",
+  "disclosure",
   "bind",
   "init",
   "for",
@@ -1337,11 +1341,11 @@ function getBinding(el, name, fallback) {
   let attr = el.getAttribute(name);
   if (attr === null)
     return typeof fallback === "function" ? fallback() : fallback;
+  if (attr === "")
+    return true;
   if (isBooleanAttr(name)) {
     return !![name, "true"].includes(attr);
   }
-  if (attr === "")
-    return true;
   return attr;
 }
 
@@ -1474,7 +1478,7 @@ var Alpine = {
   get raw() {
     return raw;
   },
-  version: "3.10.3",
+  version: "3.10.4",
   flushAndStopDeferringMutations,
   dontAutoEvaluateFunctions,
   disableEffectScheduling,
@@ -2635,8 +2639,9 @@ directive("bind", (el, {value, modifiers, expression, original}, {effect: effect
     return storeKeyForXFor(el, expression);
   let evaluate2 = evaluateLater(el, expression);
   effect3(() => evaluate2((result) => {
-    if (result === void 0 && expression.match(/\./))
+    if (result === void 0 && typeof expression === "string" && expression.match(/\./)) {
       result = "";
+    }
     mutateDom(() => bind(el, value, result, modifiers));
   }));
 });
@@ -5050,6 +5055,7 @@ alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].start();
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var micromodal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! micromodal */ "./node_modules/micromodal/dist/micromodal.es.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -5068,8 +5074,11 @@ micromodal__WEBPACK_IMPORTED_MODULE_0__["default"].init({
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
+
 // import Echo from 'laravel-echo';
+
 // window.Pusher = require('pusher-js');
+
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
 //     key: process.env.MIX_PUSHER_APP_KEY,

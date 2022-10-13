@@ -75,12 +75,16 @@ class CartController extends Controller
                 //return view('user.cart.index');
             }else{
                 $lineItem = [
-                    'name' => $product->name,
-                    'description' => $product->information,
-                    'amount' => $product->price,
-                    'currency' => 'JPY',
-                    'quantity' => $product->pivot->quantity,
+                    'price_data' => [
+                        'unit_amount' => $product->price,
+                        'currency' => 'JPY',
 
+                    'product_data' => [
+                        'name' => $product->name,
+                        'description' => $product->information,
+                ],
+            ],
+                'quantity' => $product->pivot->quantity,
             ];
                 array_push($lineItems, $lineItem);
             }

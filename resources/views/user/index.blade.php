@@ -1,11 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                商品一覧
-            </h2>
-            <div>
-                <form method="get" action="{{ route('user.items.index')}}">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            商品一覧
+        </h2>
+            <form method="get" action="{{ route('user.items.index')}}">
+                <div class="md:flex md:justify-around">
+                    <div class="md:flex items-center">
+                        <select name="category" class="mb-2 mr-2 md:mb-0">
+                            <option value="0"  @if(\Request::get('category') === '0') selecteed @endif>全て</option>
+                            @foreach($categories as $category)
+                                <optgroup label="{{ $category->name }}">
+                            @foreach($category->secondary as $secondary)
+                                <option value="{{ $secondary->id}}"@if(\Request::get('category') == $secondary->id) selected @endif >
+                                {{ $secondary->name }}
+                                </option>
+                            @endforeach
+                            @endforeach
+                        </select>
+                        <div class="flex items-center">
+                            <div class="mr-2">
+                                <input name="keyword" class="border border-gray-500 py-2"  placeholder="キーワードを入力">
+                            </div>
+                            <div>
+                                <button class="ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">検索する</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="flex">
                         <div>
                             <span class="text-sm">表示順</span><br>
@@ -58,9 +78,8 @@
                             </select>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </form>
     </x-slot>
 
     <div class="py-12">
